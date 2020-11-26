@@ -6,19 +6,33 @@ namespace Inoovent
     class Program
     {
         static void Main(string[] args)
-        {
+        {         
+           
+            DateTime data = DateTime.Today.AddDays(-16);
+            int recorrencia = 0;
 
-            // criar forma de pegar a data de recorrência
-            // 01 - 11147708
-            //10 - 11147707
-            //20 - 11147706
+            switch (data.Day.ToString())
+            {
+                case "1":
+                    recorrencia = 11147708;
+                    break;
 
-            int idDataRecorrencia = 11147707;
+                case "10":
+                    recorrencia = 11147707;
+                    break;
 
+                case "20":
+                    recorrencia = 11147706;
+                    break;
 
-            JArray Quotes = ObjectsHandler.GetQuotes(11147707);
+                default:
+                    Console.WriteLine("Não encontrou a data");
+                    break;
+            }            
 
-            foreach (JObject quote in Quotes)
+            JArray Documents = ObjectsHandler.Document(recorrencia);
+
+            foreach (JObject quote in Documents)
             {
                 string NewOrder = ObjectsHandler.CreateOrder(quote);
                 Console.WriteLine(NewOrder);

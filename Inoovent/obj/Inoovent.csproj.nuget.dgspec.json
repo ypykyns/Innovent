@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Luis Eduardo\\source\\repos\\Inoovent\\Inoovent\\Inoovent.csproj": {}
+    "C:\\Users\\Luis Eduardo\\source\\repos\\Innovent\\Inoovent\\Inoovent.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Luis Eduardo\\source\\repos\\Inoovent\\Inoovent\\Inoovent.csproj": {
+    "C:\\Users\\Luis Eduardo\\source\\repos\\Innovent\\Inoovent\\Inoovent.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Luis Eduardo\\source\\repos\\Inoovent\\Inoovent\\Inoovent.csproj",
+        "projectUniqueName": "C:\\Users\\Luis Eduardo\\source\\repos\\Innovent\\Inoovent\\Inoovent.csproj",
         "projectName": "Inoovent",
-        "projectPath": "C:\\Users\\Luis Eduardo\\source\\repos\\Inoovent\\Inoovent\\Inoovent.csproj",
+        "projectPath": "C:\\Users\\Luis Eduardo\\source\\repos\\Innovent\\Inoovent\\Inoovent.csproj",
         "packagesPath": "C:\\Users\\Luis Eduardo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Luis Eduardo\\source\\repos\\Inoovent\\Inoovent\\obj\\",
+        "outputPath": "C:\\Users\\Luis Eduardo\\source\\repos\\Innovent\\Inoovent\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Luis Eduardo\\AppData\\Roaming\\NuGet\\NuGet.Config",
