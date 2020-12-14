@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "at1ynmD0fWYsinKNsv4nlqvUYrn/UAUqWwBWbxfBNmDGLUnPRU/mjgTWbkQ5VWkUjrp4PQabTQk+Wk9kve+KMA==",
+  "dgSpecHash": "/VVive0tV+pXI97KImIl5pIviouFum6IRYgptlxj4Un6/sw/IUwkhWpQRCuWMqbAbfVc1ncSjx59pn86o+fzkg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Luis Eduardo\\source\\repos\\Innovent\\Inoovent\\Inoovent.csproj",
+  "projectFilePath": "C:\\Users\\Luis Eduardo\\Downloads\\InnoventApi\\Innovent\\Inoovent\\Inoovent.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Luis Eduardo\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.7\\microsoft.aspnet.webapi.client.5.2.7.nupkg.sha512",
     "C:\\Users\\Luis Eduardo\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
@@ -11,6 +11,7 @@
     "C:\\Users\\Luis Eduardo\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\Luis Eduardo\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\Luis Eduardo\\.nuget\\packages\\newtonsoft.json.bson\\1.0.1\\newtonsoft.json.bson.1.0.1.nupkg.sha512",
+    "C:\\Users\\Luis Eduardo\\.nuget\\packages\\restsharp\\106.11.7\\restsharp.106.11.7.nupkg.sha512",
     "C:\\Users\\Luis Eduardo\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Luis Eduardo\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Luis Eduardo\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

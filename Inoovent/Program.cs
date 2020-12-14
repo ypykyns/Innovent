@@ -6,9 +6,9 @@ namespace Inoovent
     class Program
     {
         static void Main(string[] args)
-        {         
-           
-            DateTime data = DateTime.Today.AddDays(+9);
+        {
+
+            DateTime data = DateTime.Today.AddDays(-4);
             int recorrencia = 0;
 
             switch (data.Day.ToString())
@@ -32,9 +32,9 @@ namespace Inoovent
 
             JArray Documents = ObjectsHandler.Document(recorrencia);
 
-            foreach (JObject quote in Documents)
+            foreach (JObject document in Documents)
             {
-                string NewOrder = ObjectsHandler.CreateOrder(quote);
+                string NewOrder = ObjectsHandler.CreateOrder(document);
                 Console.WriteLine(NewOrder);
             }
 
