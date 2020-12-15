@@ -4599,11 +4599,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Luis Eduardo\\Downloads\\InnoventApi\\Innovent\\Inoovent\\Inoovent.csproj",
+      "projectUniqueName": "C:\\Users\\Luis Eduardo\\source\\repos\\Innovent\\Inoovent\\Inoovent.csproj",
       "projectName": "Inoovent",
-      "projectPath": "C:\\Users\\Luis Eduardo\\Downloads\\InnoventApi\\Innovent\\Inoovent\\Inoovent.csproj",
+      "projectPath": "C:\\Users\\Luis Eduardo\\source\\repos\\Innovent\\Inoovent\\Inoovent.csproj",
       "packagesPath": "C:\\Users\\Luis Eduardo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Luis Eduardo\\Downloads\\InnoventApi\\Innovent\\Inoovent\\obj\\",
+      "outputPath": "C:\\Users\\Luis Eduardo\\source\\repos\\Innovent\\Inoovent\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Luis Eduardo\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -24,7 +24,6 @@ C:\Users\Luis Eduardo\source\repos\Innovent\Inoovent\bin\Debug\netcoreapp3.1\Ino
 C:\Users\Luis Eduardo\source\repos\Innovent\Inoovent\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
 C:\Users\Luis Eduardo\source\repos\Innovent\Inoovent\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 C:\Users\Luis Eduardo\source\repos\Innovent\Inoovent\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
-C:\Users\Luis Eduardo\source\repos\Innovent\Inoovent\obj\Debug\netcoreapp3.1\Inoovent.csprojAssemblyReference.cache
 C:\Users\Luis Eduardo\source\repos\Innovent\Inoovent\obj\Debug\netcoreapp3.1\Inoovent.AssemblyInfoInputs.cache
 C:\Users\Luis Eduardo\source\repos\Innovent\Inoovent\obj\Debug\netcoreapp3.1\Inoovent.AssemblyInfo.cs
 C:\Users\Luis Eduardo\source\repos\Innovent\Inoovent\obj\Debug\netcoreapp3.1\Inoovent.csproj.CoreCompileInputs.cache

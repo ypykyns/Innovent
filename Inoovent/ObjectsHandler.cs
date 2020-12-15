@@ -15,7 +15,7 @@ namespace Inoovent
 
                 try
                 {
-                    Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)+and+((Deal/OtherProperties/any(o:+o/FieldId+eq+161188+and+(o/IntegerValue+eq+{IdDataRecorrência}))))))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId", Method.GET);
+                    Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)+and+((Deal/OtherProperties/any(o:+o/FieldId+eq+161188+and+(o/IntegerValue+eq+{IdDataRecorrência}))))))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId", Method.GET);
                 }
                 catch
                 {
@@ -28,7 +28,7 @@ namespace Inoovent
                 Console.WriteLine("Error on GetOrders Method ==> " + ex.Message);
                 throw ex;
             }
-        }        
+        }
 
         public static string CreateOrder(JObject Document)
         {
@@ -39,7 +39,8 @@ namespace Inoovent
                 JObject Order = new JObject();
 
                 Order.Add("ContactId", (int)Document["ContactId"]);
-                Order.Add("DealId", (int)Document["DealId"]);                
+                Order.Add("DealId", (int)Document["DealId"]);
+                Order.Add("OwnerId", (int)Document["OwnerId"]);
 
                 JArray OtherProperties = Document["OtherProperties"] as JArray;
 
@@ -47,14 +48,7 @@ namespace Inoovent
                 bool fixarDolar = true;
 
                 foreach (JObject property in OtherProperties)
-                {                    
-                    // Dolar PTAX
-                    if (property["FieldKey"].ToString() == "document_949F6816-27C0-409D-96BB-6496B0730C78")
-                    {
-                        property["FieldKey"] = "order_DF26989A-F4B9-46A2-90A8-FDAE70BE4F9C";
-                        continue;
-                    }
-
+                {
                     // Fixar Dolar 
                     if (property["FieldKey"].ToString() == "document_D7E10E53-4855-474A-974A-F052ECC0C5B2")
                     {
@@ -66,43 +60,89 @@ namespace Inoovent
                             dolarPtax = GetDolarPtaxVenda();
                         }
                     }
-
                     // Valor Total do Documento
                     if (property["FieldKey"].ToString() == "document_6A10EFCB-1375-4B27-85D6-8DB260CF9FBE")
                     {
                         Order.Add("Amount", (decimal)property["DecimalValue"]);
                         continue;
+                    }
+                }
 
+
+                if (!fixarDolar)
+                {
+                    bool hasProp = false;
+
+                    foreach (JObject property in OtherProperties)
+                    {
+                        // Dolar PTAX
+                        if (property["FieldKey"].ToString() == "document_949F6816-27C0-409D-96BB-6496B0730C78")
+                        {
+                            property["FieldKey"] = "order_DF26989A-F4B9-46A2-90A8-FDAE70BE4F9C";
+                            property["DecimalValue"] = dolarPtax;
+                            hasProp = true;
+                            continue;
+                        }
                     }
 
-                    
-                }              
+                    if (!hasProp)
+                    {
+                        JObject dptax = new JObject();
+                        dptax.Add("FieldKey", "order_DF26989A-F4B9-46A2-90A8-FDAE70BE4F9C");
+                        dptax.Add("DecimalValue", dolarPtax);
+
+                        OtherProperties.Add(dptax);
+                    }
+                }
+                else
+                {
+                    foreach (JObject property in OtherProperties)
+                    {
+                        // Dolar PTAX
+                        if (property["FieldKey"].ToString() == "document_949F6816-27C0-409D-96BB-6496B0730C78")
+                        {
+                            property["FieldKey"] = "order_DF26989A-F4B9-46A2-90A8-FDAE70BE4F9C";
+                            continue;
+                        }
+                    }
+                }
 
 
                 JArray Sections = Document["Sections"] as JArray;
+
+                decimal totalBlocoZero = 0;
+                decimal totalBlocoUm = 0;
+                decimal custoTotal = 0;
+                decimal valorTotalProduto = 0;
 
                 foreach (JObject section in Sections)
                 {
                     if (section["Code"].ToString() == "0")
                     {
+
+                        totalBlocoZero = (decimal)section["Total"];
+
                         try
                         {
                             foreach (JObject product in section["Products"])
                             {
                                 foreach (JObject item in product["OtherProperties"])
                                 {
+                                    // custo unitário
                                     if (item["FieldKey"].ToString() == "document_product_A1A169AD-2E6C-4A78-ABC9-2FCDDFA62BBC")
                                     {
                                         item["FieldKey"] = "order_table_product_7AE72CF2-C261-4F60-A5BD-FBC053F731D8";
                                         continue;
                                     }
 
+                                    //custo total
                                     if (item["FieldKey"].ToString() == "document_product_AC89A6B5-E447-48B9-B444-15F70CBD7B6D")
                                     {
                                         item["FieldKey"] = "order_table_product_DD511660-35FD-488D-A0F9-CFBDF93284DD";
                                         continue;
                                     }
 
+                                    // data de renovação
                                     if (item["FieldKey"].ToString() == "document_product_84AEE89F-091B-4395-954A-0982AFCEFA0D")
                                     {
                                         item["FieldKey"] = "order_table_product_F6A7B96B-0474-4547-99BD-6F24DF07199F";
@@ -120,6 +160,7 @@ namespace Inoovent
                         foreach (JObject otherProp in section["OtherProperties"])
                         {
 
+                            // total do pedido custo
                             if (otherProp["FieldKey"].ToString() == "document_section_BE26BCEA-7411-48C9-BB31-C2E8FD8B07EC")
                             {
                                 otherProp["FieldKey"] = "order_table_24FAD56F-8BE1-4518-B0EA-FF0314E5E58C";
@@ -138,23 +179,47 @@ namespace Inoovent
 
                     if (section["Code"].ToString() == "1")
                     {
+
                         try
                         {
                             foreach (JObject product in section["Products"])
                             {
+
                                 foreach (JObject item in product["OtherProperties"])
                                 {
+                                    // custo unitário
                                     if (item["FieldKey"].ToString() == "document_product_F0825502-FC8A-430E-A153-8E502E06A8E6")
                                     {
                                         item["FieldKey"] = "order_table_product_7AE72CF2-C261-4F60-A5BD-FBC053F731D8";
                                         continue;
                                     }
 
+                                    // custo total
                                     if (item["FieldKey"].ToString() == "document_product_AC89A6B5-E447-48B9-B444-15F70CBD7B6D")
                                     {
                                         item["FieldKey"] = "order_table_product_DD511660-35FD-488D-A0F9-CFBDF93284DD";
+
+                                        if (!fixarDolar)
+                                        {
+                                            custoTotal += (decimal)item["DecimalValue"];
+                                        }
                                         continue;
                                     }
+
+                                    // valor unitário
+                                    if (item["FieldKey"].ToString() == "document_product_57F27E95-4061-4B61-8F01-AF395CBB2EEC")
+                                    {
+                                        product["UnitPrice"] = item["DecimalValue"];
+
+                                        if (!fixarDolar)
+                                        {
+                                            // unit price esta vindo null
+                                            valorTotalProduto += ((decimal)product["Quantity"] * (decimal)product["UnitPrice"]);
+                                        }
+
+                                        continue;
+                                    }
+
                                 }
 
                             }
@@ -163,13 +228,24 @@ namespace Inoovent
                         {
                         }
 
+
                         //OtherProperties
                         foreach (JObject otherProp in section["OtherProperties"])
                         {
-
+                            // total do bloco convertido
                             if (otherProp["FieldKey"].ToString() == "document_section_96112BD3-9CAD-4821-A75F-38916EA90C30")
                             {
-                                otherProp["FieldKey"] = "order_table_D8AE5FC0-E643-440C-BE5C-3BE1439BCE7A";
+                                if (!fixarDolar)
+                                {
+                                    otherProp["FieldKey"] = "order_table_D8AE5FC0-E643-440C-BE5C-3BE1439BCE7A";
+                                    otherProp["DecimalValue"] = valorTotalProduto * dolarPtax;
+                                }
+                                else
+                                {
+                                    otherProp["FieldKey"] = "order_table_D8AE5FC0-E643-440C-BE5C-3BE1439BCE7A";                                  
+
+                                }
+
                                 continue;
                             }
 
@@ -179,19 +255,40 @@ namespace Inoovent
                                 continue;
                             }
 
+                            // total custo bloco
                             if (otherProp["FieldKey"].ToString() == "document_section_BB27BBB5-C3B9-4DA0-A463-14B0EC5C828D")
                             {
-                                otherProp["FieldKey"] = "order_table_34EB08A2-E001-400E-AD7F-B32DB7D5DC72";
+
+                                if (!fixarDolar)
+                                {
+                                    otherProp["FieldKey"] = "order_table_34EB08A2-E001-400E-AD7F-B32DB7D5DC72";
+                                    otherProp["DecimalValue"] = custoTotal * dolarPtax;
+                                }
+                                else
+                                {
+                                    otherProp["FieldKey"] = "order_table_34EB08A2-E001-400E-AD7F-B32DB7D5DC72";
+                                    
+                                }
+
                                 continue;
                             }
+                        }
+                        if (!fixarDolar)
+                        {
+                            totalBlocoUm = valorTotalProduto * dolarPtax;
+                            section["Total"] = totalBlocoUm;
                         }
 
                     }
                 }
 
+                if (!fixarDolar)
+                {
+                    Order["Amount"] = (decimal)(totalBlocoUm + totalBlocoZero);
+                }
 
 
-
+                Order.Add("OtherProperties",OtherProperties);
                 Order.Add("Sections", Sections);
 
                 JArray NewOrder = RequestHandler.MakePloomesRequest($"Orders", Method.POST, Order);
@@ -203,9 +300,6 @@ namespace Inoovent
                 catch
                 {
                 }
-
-
-
 
                 return orderId;
             }
@@ -221,18 +315,19 @@ namespace Inoovent
             try
             {
                 JArray cotacoes = new JArray();
+                int count = 0;
 
-                while (cotacoes.Count < 1)
+                while (cotacoes.Count < 1 && count < 10)
                 {
                     // primeiro pesquisa pela cotação do dia = se não encontrar vai subtraindo
                     //os dias até encontrar o primeiro dia com uma cotação válida
 
-                    int x = 0;
-                    DateTime date = DateTime.Now.AddDays(-x);
+
+                    DateTime date = DateTime.Now.AddDays(-count);
                     string datePTax = date.ToString("MM-dd-yyyy");
 
                     cotacoes = RequestHandler.DolarPtax(datePTax);
-                    x++;
+                    count++;
                 }
 
                 decimal cotacaoPtax = 0;

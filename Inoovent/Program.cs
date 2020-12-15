@@ -8,7 +8,7 @@ namespace Inoovent
         static void Main(string[] args)
         {
 
-            DateTime data = DateTime.Today.AddDays(-4);
+            DateTime data = DateTime.Today.AddDays(-5);
             int recorrencia = 0;
 
             switch (data.Day.ToString())
