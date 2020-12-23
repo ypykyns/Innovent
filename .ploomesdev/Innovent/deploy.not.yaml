@@ -1,0 +1,33 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: <@ PROJECT_NAME @>-<@ BRANCH_NAME @>-<@ DEPLOYMENT_ID @>
+  labels:
+    app: <@ PROJECT_NAME @>-<@ BRANCH_NAME @>-<@ DEPLOYMENT_ID @>
+spec:
+  #selector:
+   # matchLabels:
+    #  app: <@ PROJECT_NAME @>-<@ BRANCH_NAME @>-<@ DEPLOYMENT_ID @>
+  schedule: "*/5 * * * *"
+  #schedule: "0 12 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          nodeSelector:
+            kubernetes.io/os: linux
+            # kubernetes.io/hostname: aks-linux16gbram-36893281-vmss00000o
+          restartPolicy: OnFailure                                                                  
+          containers:
+          - name: <@ PROJECT_NAME @>-<@ BRANCH_NAME @>-<@ DEPLOYMENT_ID @>
+            imagePullPolicy: Always
+            image: ploomes.azurecr.io/ploomes/innovent:<@ BRANCH_NAME @>-development
+            volumeMounts:
+            - name: secrets
+              mountPath: "/secrets"
+              readOnly: true
+          volumes:
+            - name: secrets
+              secret:
+                secretName: <@ SECRET_NAME @>

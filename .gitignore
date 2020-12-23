@@ -1,0 +1,6 @@
+
+# docker secrets
+.ploomesdev/Innovent/secrets
+
+# ploomesdev temporary files
+.ploomesdev/Innovent/generated

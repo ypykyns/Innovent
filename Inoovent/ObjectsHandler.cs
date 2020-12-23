@@ -8,15 +8,21 @@ namespace Inoovent
     class ObjectsHandler
     {
         public static JArray Document(int IdDataRecorrência)
-        {
+        {            
+
             try
             {
                 JArray Document = new JArray();
 
                 try
                 {
-                    Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)+and+((Deal/OtherProperties/any(o:+o/FieldId+eq+161188+and+(o/IntegerValue+eq+{IdDataRecorrência}))))))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId", Method.GET);
+                 // todas as datas
+               // Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
+                
+                //selecionando a data de recorrência    
+               Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)+and+((Deal/OtherProperties/any(o:+o/FieldId+eq+161188+and+(o/IntegerValue+eq+{IdDataRecorrência}))))))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
                 }
+
                 catch
                 {
                 }
@@ -258,7 +264,6 @@ namespace Inoovent
                             // total custo bloco
                             if (otherProp["FieldKey"].ToString() == "document_section_BB27BBB5-C3B9-4DA0-A463-14B0EC5C828D")
                             {
-
                                 if (!fixarDolar)
                                 {
                                     otherProp["FieldKey"] = "order_table_34EB08A2-E001-400E-AD7F-B32DB7D5DC72";
@@ -269,7 +274,6 @@ namespace Inoovent
                                     otherProp["FieldKey"] = "order_table_34EB08A2-E001-400E-AD7F-B32DB7D5DC72";
                                     
                                 }
-
                                 continue;
                             }
                         }
@@ -278,7 +282,6 @@ namespace Inoovent
                             totalBlocoUm = valorTotalProduto * dolarPtax;
                             section["Total"] = totalBlocoUm;
                         }
-
                     }
                 }
 
@@ -348,104 +351,6 @@ namespace Inoovent
 
 
 
-        /*
-        public static string CreateOrder_(JObject Quote)
-        {
-            string orderId = "";
-
-            try
-            {
-                JObject Order = new JObject();
-
-                Order.Add("ContactId", (int)Quote["ContactId"]);
-                Order.Add("DealId", (int)Quote["DealId"]);
-
-                JArray Sections = Quote["Sections"] as JArray;
-
-                foreach (JObject section in Sections)
-                {
-                    if (section["Code"].ToString() == "0")
-                    {
-                        try
-                        {
-                            foreach (JObject product in section["Products"])
-                            {
-                                foreach (JObject item in product["OtherProperties"])
-                                {
-                                    if (item["FieldKey"].ToString() == "quote_product_42C167A1-A6D6-41FE-900A-9A78C5EF7781")
-                                    {
-                                        item["FieldKey"] = "order_table_product_7AE72CF2-C261-4F60-A5BD-FBC053F731D8";
-                                        continue;
-                                    }
-
-                                    if (item["FieldKey"].ToString() == "quote_product_30B614C7-9793-4AF6-B772-17BE1CE0823B")
-                                    {
-                                        item["FieldKey"] = "order_table_product_DD511660-35FD-488D-A0F9-CFBDF93284DD";
-                                        continue;
-                                    }
-                                }
-                            }
-                        }
-                        catch
-                        {
-                        }
-                    }
-
-                    if (section["Code"].ToString() == "1")
-                    {
-                        try
-                        {
-                            foreach (JObject product in section["Products"])
-                            {
-                                foreach (JObject item in product["OtherProperties"])
-                                {
-                                    if (item["FieldKey"].ToString() == "quote_product_42C167A1-A6D6-41FE-900A-9A78C5EF7781")
-                                    {
-                                        item["FieldKey"] = "order_table_D8AE5FC0-E643-440C-BE5C-3BE1439BCE7A";
-                                        continue;
-                                    }
-
-                                    if (item["FieldKey"].ToString() == "quote_product_30B614C7-9793-4AF6-B772-17BE1CE0823B")
-                                    {
-                                        item["FieldKey"] = "order_table_34EB08A2-E001-400E-AD7F-B32DB7D5DC72";
-                                        continue;
-                                    }
-                                }
-
-                            }
-                        }
-                        catch
-                        {
-                        }
-
-                    }
-                }
-
-
-                Order.Add("Sections", Sections);
-
-                JArray NewOrder = RequestHandler.MakePloomesRequest($"Orders", Method.POST, Order);
-
-                try
-                {
-                    orderId = NewOrder[0]["Id"].ToString();
-                }
-                catch
-                {
-                }
-
-
-
-
-                return orderId;
-            }
-            catch
-            {
-                return "Erro na criação do Pedido => " + Quote.ToString();
-            }
-
-        }
-        */
-
+      
     }
 }
