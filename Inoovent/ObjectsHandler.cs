@@ -122,66 +122,7 @@ namespace Inoovent
                 decimal valorTotalProduto = 0;
 
                 foreach (JObject section in Sections)
-                {
-                    if (section["Code"].ToString() == "0")
-                    {
-
-                        totalBlocoZero = (decimal)section["Total"];
-
-                        try
-                        {
-                            foreach (JObject product in section["Products"])
-                            {
-                                foreach (JObject item in product["OtherProperties"])
-                                {
-                                    // custo unitário
-                                    if (item["FieldKey"].ToString() == "document_product_A1A169AD-2E6C-4A78-ABC9-2FCDDFA62BBC")
-                                    {
-                                        item["FieldKey"] = "order_table_product_7AE72CF2-C261-4F60-A5BD-FBC053F731D8";
-                                        continue;
-                                    }
-
-                                    //custo total
-                                    if (item["FieldKey"].ToString() == "document_product_AC89A6B5-E447-48B9-B444-15F70CBD7B6D")
-                                    {
-                                        item["FieldKey"] = "order_table_product_DD511660-35FD-488D-A0F9-CFBDF93284DD";
-                                        continue;
-                                    }
-
-                                    // data de renovação
-                                    if (item["FieldKey"].ToString() == "document_product_84AEE89F-091B-4395-954A-0982AFCEFA0D")
-                                    {
-                                        item["FieldKey"] = "order_table_product_F6A7B96B-0474-4547-99BD-6F24DF07199F";
-                                        continue;
-                                    }
-
-                                }
-                            }
-                        }
-                        catch
-                        {
-                        }
-
-                        //OtherProperties
-                        foreach (JObject otherProp in section["OtherProperties"])
-                        {
-
-                            // total do pedido custo
-                            if (otherProp["FieldKey"].ToString() == "document_section_BE26BCEA-7411-48C9-BB31-C2E8FD8B07EC")
-                            {
-                                otherProp["FieldKey"] = "order_table_24FAD56F-8BE1-4518-B0EA-FF0314E5E58C";
-                                continue;
-                            }
-
-                            if (otherProp["FieldKey"].ToString() == "document_section_E262E7E9-C4B2-4F6D-9D9A-B927936F0D6B")
-                            {
-                                otherProp["FieldKey"] = "order_table_BA0D4E64-3E9E-4796-A1EC-069FAF6CFD13";
-                                continue;
-                            }
-
-                        }
-
-                    }
+                {                   
 
                     if (section["Code"].ToString() == "1")
                     {
