@@ -7,12 +7,10 @@ namespace Inoovent
     {
         static void Main(string[] args)
         {
-
-            DateTime data = DateTime.Today.AddDays(-20);
-            //DateTime data = DateTime.Today;
+            DateTime data = DateTime.Today;
             int recorrencia = 0;
 
-            Console.WriteLine("Data de recorrência: " + data.Day.ToString());
+            Console.WriteLine("Iniciou execução => Data de recorrência: " + data.Day.ToString());
 
             switch (data.Day.ToString())
             {
@@ -156,14 +154,14 @@ namespace Inoovent
             catch
             {
             }
-                       
+
 
             foreach (JObject document in Documents)
             {
                 DateTime dataCriacaoDoc = DateTime.Parse((document["CreateDate"].ToString()));
                 DateTime dataAtual = DateTime.Today;
 
-                if(true) //(dataCriacaoDoc.Month.ToString() != dataAtual.Month.ToString())
+                if (dataCriacaoDoc.Month.ToString() != dataAtual.Month.ToString())
                 {
                     string NewOrder = ObjectsHandler.CreateOrder(document);
                     Console.WriteLine("Pedido criado ==> " + NewOrder);

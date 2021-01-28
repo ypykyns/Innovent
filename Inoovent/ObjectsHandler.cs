@@ -8,7 +8,7 @@ namespace Inoovent
     class ObjectsHandler
     {
         public static JArray Document(int IdDataRecorrência)
-        {            
+        {
 
             try
             {
@@ -16,11 +16,11 @@ namespace Inoovent
 
                 try
                 {
-                 // todas as datas
-               // Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
-                
-                //selecionando a data de recorrência    
-               Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)+and+((Deal/OtherProperties/any(o:+o/FieldId+eq+161188+and+(o/IntegerValue+eq+{IdDataRecorrência}))))))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
+                    // todas as datas
+                    // Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
+
+                    //selecionando a data de recorrência    
+                    Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)+and+((Deal/OtherProperties/any(o:+o/FieldId+eq+161188+and+(o/IntegerValue+eq+{IdDataRecorrência}))))))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
                 }
 
                 catch
@@ -31,7 +31,10 @@ namespace Inoovent
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error on GetOrders Method ==> " + ex.Message);
+                string error = "Source ===> " + ex.Source + "\r\n" + "Erro na execução da aplicação ===> " + ex.Message + "\r\n" +
+                   "Método origem da exception ===> " + ex.TargetSite + "\r\n" + "Stack Trace ===> " + ex.StackTrace;
+
+                Console.WriteLine(error);
                 throw ex;
             }
         }
@@ -122,7 +125,7 @@ namespace Inoovent
                 decimal valorTotalProduto = 0;
 
                 foreach (JObject section in Sections)
-                {                   
+                {
 
                     if (section["Code"].ToString() == "1")
                     {
@@ -189,7 +192,7 @@ namespace Inoovent
                                 }
                                 else
                                 {
-                                    otherProp["FieldKey"] = "order_table_D8AE5FC0-E643-440C-BE5C-3BE1439BCE7A";                                  
+                                    otherProp["FieldKey"] = "order_table_D8AE5FC0-E643-440C-BE5C-3BE1439BCE7A";
 
                                 }
 
@@ -213,7 +216,7 @@ namespace Inoovent
                                 else
                                 {
                                     otherProp["FieldKey"] = "order_table_34EB08A2-E001-400E-AD7F-B32DB7D5DC72";
-                                    
+
                                 }
                                 continue;
                             }
@@ -232,7 +235,7 @@ namespace Inoovent
                 }
 
 
-                Order.Add("OtherProperties",OtherProperties);
+                Order.Add("OtherProperties", OtherProperties);
                 Order.Add("Sections", Sections);
 
                 JArray NewOrder = RequestHandler.MakePloomesRequest($"Orders", Method.POST, Order);
@@ -247,8 +250,13 @@ namespace Inoovent
 
                 return orderId;
             }
-            catch
+            catch (Exception ex)
             {
+                string error = "Source ===> " + ex.Source + "\r\n" + "Erro na execução da aplicação ===> " + ex.Message + "\r\n" +
+                   "Método origem da exception ===> " + ex.TargetSite + "\r\n" + "Stack Trace ===> " + ex.StackTrace;
+
+                Console.WriteLine(error);
+
                 return "Erro na criação do Pedido => " + Document.ToString();
             }
 
@@ -292,6 +300,6 @@ namespace Inoovent
 
 
 
-      
+
     }
 }
