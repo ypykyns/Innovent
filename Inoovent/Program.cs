@@ -7,12 +7,14 @@ namespace Inoovent
     {
         static void Main(string[] args)
         {
-            DateTime data = DateTime.Today;
+            DateTime data = DateTime.Today.AddDays(-1);
             int recorrencia = 0;
-
+            Console.WriteLine("Data de Hoje => " + DateTime.Today.ToString());
             Console.WriteLine("Iniciou execução => Data de recorrência: " + data.Day.ToString());
 
             switch (data.Day.ToString())
+
+
             {
                 case "1":
                     recorrencia = 11147708;

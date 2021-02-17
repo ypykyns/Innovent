@@ -50,6 +50,7 @@ namespace Inoovent
                 Order.Add("ContactId", (int)Document["ContactId"]);
                 Order.Add("DealId", (int)Document["DealId"]);
                 Order.Add("OwnerId", (int)Document["OwnerId"]);
+                Order.Add("TemplateId", 184483); // Modelo CSP Mensal
 
                 JArray OtherProperties = Document["OtherProperties"] as JArray;
 
