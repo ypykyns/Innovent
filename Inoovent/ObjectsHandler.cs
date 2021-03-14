@@ -9,18 +9,14 @@ namespace Inoovent
     {
         public static JArray Document(int IdDataRecorrência)
         {
-
             try
             {
                 JArray Document = new JArray();
 
                 try
                 {
-                    // todas as datas
-                    // Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
-
                     //selecionando a data de recorrência    
-                    Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)+and+((Deal/OtherProperties/any(o:+o/FieldId+eq+161188+and+(o/IntegerValue+eq+{IdDataRecorrência}))))))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
+                    Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)+and+((Deal/OtherProperties/any(o:+o/FieldId+eq+161188+and+(o/IntegerValue+eq+{IdDataRecorrência}))))))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue,BigStringValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
                 }
 
                 catch
@@ -76,8 +72,29 @@ namespace Inoovent
                         Order.Add("Amount", (decimal)property["DecimalValue"]);
                         continue;
                     }
-                }
 
+                    // Margem
+                    if (property["FieldKey"].ToString() == "document_D14387D7-BBCE-4E3B-8D82-1A54385A6622")
+                    {
+                        property["FieldKey"] = "order_8D24E6F7-9404-4E9B-B37C-FD273A9C87D2";
+                        continue;
+                    }
+
+                    // Calcular Valores
+                    if (property["FieldKey"].ToString() == "document_06AD3B65-D0C6-4AFE-9F03-FEDE2E92F087")
+                    {
+                        property["FieldKey"] = "order_81E32A97-B0FB-4F2A-BCDF-BD76C5EFB5BC";
+                        continue;
+                    }
+
+                    // Observações
+                    if (property["FieldKey"].ToString() == "document_0B753569-4197-4D08-B995-3E4D3498DD7A")
+                    {
+                        property["FieldKey"] = "order_F5CA499E-5F44-4993-B478-DD3819FE5828";
+                        continue;
+                    }
+
+                }
 
                 if (!fixarDolar)
                 {
@@ -170,9 +187,7 @@ namespace Inoovent
 
                                         continue;
                                     }
-
                                 }
-
                             }
                         }
                         catch
@@ -200,11 +215,6 @@ namespace Inoovent
                                 continue;
                             }
 
-                            if (otherProp["FieldKey"].ToString() == "document_section_E262E7E9-C4B2-4F6D-9D9A-B927936F0D6B")
-                            {
-                                otherProp["FieldKey"] = "order_table_BA0D4E64-3E9E-4796-A1EC-069FAF6CFD13";
-                                continue;
-                            }
 
                             // total custo bloco
                             if (otherProp["FieldKey"].ToString() == "document_section_BB27BBB5-C3B9-4DA0-A463-14B0EC5C828D")
@@ -221,6 +231,15 @@ namespace Inoovent
                                 }
                                 continue;
                             }
+
+                            //Margem do bloco
+                            if (otherProp["FieldKey"].ToString() == "document_section_E262E7E9-C4B2-4F6D-9D9A-B927936F0D6B")
+                            {
+                                otherProp["FieldKey"] = "order_table_BA0D4E64-3E9E-4796-A1EC-069FAF6CFD13";
+                                continue;
+                            }
+
+
                         }
                         if (!fixarDolar)
                         {
@@ -295,12 +314,11 @@ namespace Inoovent
             }
             catch
             {
+                // Criar no Cosmos um log
+                // notificar usuário do dolar zerado
                 return 0;
             }
         }
-
-
-
 
     }
 }

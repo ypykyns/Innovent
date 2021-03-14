@@ -14,7 +14,6 @@ namespace Inoovent
 
             switch (data.Day.ToString())
 
-
             {
                 case "1":
                     recorrencia = 11147708;
@@ -160,6 +159,9 @@ namespace Inoovent
 
             foreach (JObject document in Documents)
             {
+
+                // if ((int)document["Id"] == 80718)
+                // {
                 DateTime dataCriacaoDoc = DateTime.Parse((document["CreateDate"].ToString()));
                 DateTime dataAtual = DateTime.Today;
 
@@ -180,6 +182,7 @@ namespace Inoovent
                         Console.WriteLine("Pedido emitido no mês corrente, não emitir");
                     }
                 }
+                // }
             }
 
         }
