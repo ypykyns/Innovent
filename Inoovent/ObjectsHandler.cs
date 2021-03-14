@@ -7,18 +7,16 @@ namespace Inoovent
 {
     class ObjectsHandler
     {
-        public static JArray Document(int IdDataRecorrência)
+        public static JArray Document()
         {
             try
             {
                 JArray Document = new JArray();
-
                 try
                 {
-                    //selecionando a data de recorrência    
-                    Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)+and+((Deal/OtherProperties/any(o:+o/FieldId+eq+161188+and+(o/IntegerValue+eq+{IdDataRecorrência}))))))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue,BigStringValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
+                    //Trás todos os documentos do modelo CSP Mensal   
+                    Document = RequestHandler.MakePloomesRequest($"Documents?$filter=(((TemplateId+eq+187646)+and+(Deal/StatusId+eq+2)))&$expand=OtherProperties($select=FieldKey,DecimalValue,BoolValue,BigStringValue),Sections($select=Code,Total;$expand=OtherProperties($select=FieldKey,DecimalValue),Products($select=ProductId,Quantity,UnitPrice,Total,Discount;$expand=OtherProperties($select=FieldKey,DecimalValue,DateTimeValue)))&$select=Id,ContactId,DealId,OwnerId,CreateDate", Method.GET);
                 }
-
                 catch
                 {
                 }
