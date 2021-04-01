@@ -15,6 +15,7 @@ namespace Inoovent
         private static string PLOOMES_API_PATH = "https://api2.ploomes.com/";
         public static HttpClient ploomesClient;
         private static string uk = "EA003A7E7F32C3FC9738DBA9B63B7512747D5EA3AAD59D9D4CCA6B379FB2594A72915B403163107578D02F999F19109D518AD421FC36FE919BC58F3E146006E1";
+        private static string teamKey = "bcb0e3cd6c9fd91aeb4d721c020e873aa23b9af2469cfd30549fdd342523a20ea55b24e908f527778067ec3e8216380d1d81fd734c8cc43796be16e5d62fecc6";
 
         public static void instantiatePloomesConnection()
         {
@@ -58,7 +59,6 @@ namespace Inoovent
             return Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(response)["value"] as JArray;
         }
 
-
         public static JArray DolarPtax(string date)
         {
             var client = new RestClient("https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaDia(moeda=@moeda,dataCotacao=@dataCotacao)?@moeda=%27USD%27&@dataCotacao=%27" + date + "%27&$top=100&$format=json&$select=cotacaoVenda,dataHoraCotacao,tipoBoletim");
@@ -74,7 +74,23 @@ namespace Inoovent
             // return (JObject)JsonConvert.DeserializeObject(response.Content.ToString());
         }
 
+        public static void CreateLog(JObject log)
+        {
+            var client = new RestClient("https://cosmos-api.ploomes.com/ExternalIntegrations@Logs/Add");
+            client.Timeout = -1;
+            var request = new RestRequest(RestSharp.Method.POST);
+            request.AddHeader("Team-Key", teamKey);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddParameter("application/json", log, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
 
+            Console.WriteLine(response.Content);
+
+            if (response.IsSuccessful)
+            {
+                Console.WriteLine("Log criado no cosmos ==> " + log);
+            }
+        }
 
     }
     public enum Method

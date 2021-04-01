@@ -8,42 +8,33 @@ namespace Inoovent
         static void Main(string[] args)
         {
             JArray Documents = ObjectsHandler.Document();
-
+            
             try
             {
-                Console.WriteLine(Documents.Count + " documentos encontrados.");
-                return;
+                Console.WriteLine(Documents.Count + " documentos encontrados.");               
             }
             catch
             {
             }
+            
+            //return;
+
+            string listagemPedidosCriados = "Lista de pedidos criados: " + "\r\n";            
 
             foreach (JObject document in Documents)
-            {
-                if ((int)document["Id"] == 80718231)
+            {               
                 {
-                    DateTime dataCriacaoDoc = DateTime.Parse((document["CreateDate"].ToString()));
-                    DateTime dataAtual = DateTime.Today;
-
-                    if (dataCriacaoDoc.Month.ToString() != dataAtual.Month.ToString())
-                    {
-                        string NewOrder = ObjectsHandler.CreateOrder(document);
-                        Console.WriteLine("Pedido criado ==> " + NewOrder);
-                    }
-                    else
-                    {
-                        if (dataCriacaoDoc.Year.ToString() != dataAtual.Year.ToString())
-                        {
-                            string NewOrder = ObjectsHandler.CreateOrder(document);
-                            Console.WriteLine("Pedido criado ==> " + NewOrder);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Pedido emitido no mês corrente, não emitir");
-                        }
-                    }
-                }
+                    string NewOrder = ObjectsHandler.CreateOrder(document);
+                    Console.WriteLine("Pedido: " + NewOrder);
+                    listagemPedidosCriados += "Pedido: " + NewOrder + "\r\n";                   
+                }                                        
             }
+           
+            Console.WriteLine(listagemPedidosCriados);
+
+            // grava a listagem de todos os pedidos criados 
+            ObjectsHandler.Cosmos(listagemPedidosCriados);
+            ObjectsHandler.CreateTask(listagemPedidosCriados);
 
         }
     }

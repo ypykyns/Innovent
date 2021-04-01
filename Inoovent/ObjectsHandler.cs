@@ -264,6 +264,7 @@ namespace Inoovent
                 }
                 catch
                 {
+                   return "Erro na criação do Pedido => " + Document.ToString();
                 }
 
                 return orderId;
@@ -318,5 +319,52 @@ namespace Inoovent
             }
         }
 
+        public static void Cosmos(string log)
+        {
+
+            JObject cosmosLog = new JObject();
+            cosmosLog.Add("UserId", 85231); // Recorrência Metas
+            cosmosLog.Add("ErrorMessage", log);
+            cosmosLog.Add("EntityId", 1);
+            cosmosLog.Add("Status", 200);
+
+            RequestHandler.CreateLog(cosmosLog);
+
+        }
+
+        public static void CreateTask(string description)
+        {
+            try
+            {
+                var task = new JObject();
+
+                var usersList = new List<int> {81269,16027}; // Maira e Alan                                                            
+                JArray usersArray = new JArray(); // usuários que irão receber a notificação
+
+                // adiciona os usuários que dever ser notificados no array
+                foreach (int userId in usersList)
+                {
+                    JObject userIdObj = new JObject();
+                    userIdObj.Add("UserId", userId);
+                    usersArray.Add(userIdObj);
+                }
+                task.Add("Users", usersArray);
+                task.Add("NotifiedUsers", usersArray);
+
+                task.Add("Title", "Lista de pedidos criados na recorrência mensal");
+                task.Add("Description", description);
+                task.Add("ContactId", 11839341);              
+                task.Add("EmailReminderId", 1);                             
+               
+                JArray CreateTask = RequestHandler.MakePloomesRequest("Tasks", Method.POST, task);
+
+                Cosmos("Tarefa criada => Id: " + CreateTask[0]["Id"].ToString() + task);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
